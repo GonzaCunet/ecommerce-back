@@ -11,6 +11,8 @@
     "start": "next"
   },
   "dependencies": {
+    "airtable": "^0.12.2",
+    "algoliasearch": "^4.14.2",
     "date-fns": "^4.1.0",
     "firebase-admin": "^13.4.0",
     "jsonwebtoken": "^9.0.2",

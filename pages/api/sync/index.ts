@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getOffsetAndLimitFromReq } from "lib/requests";
 import { Airtablebase } from "lib/airtable";
 import { client, indexProduct } from "lib/algolia";
 
