@@ -8,13 +8,10 @@ export default methods({
     const { limit, offset } = getOffsetAndLimitFromReq(req);
     const query = req.query.search as string;
 
-    const response = await client.searchSingleIndex({
-      indexName: "products",
-      searchParams: {
-        query,
-        hitsPerPage: limit,
-        page: offset > 1 ? Math.floor(offset / limit) : 0,
-      },
+    const index = client.initIndex("products");
+    const response = await index.search(query, {
+      hitsPerPage: limit,
+      page: offset > 1 ? Math.floor(offset / limit) : 0,
     });
 
     res.send({

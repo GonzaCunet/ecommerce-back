@@ -17,7 +17,8 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
       });
 
       try {
-        await client.saveObjects({ indexName: indexProduct, objects });
+        const index = client.initIndex(indexProduct);
+        await index.saveObjects(objects);
         console.log("siguiente página");
         fetchNextPage();
       } catch (error) {

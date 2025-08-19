@@ -1,19 +1,40 @@
-export async function createPurchase({ productId, userId }) {
-  // Esto debería guardar en la DB que el user ${userId}
-  // inició un proceso de pago para el producto ${productId}
-  // esto queda pendiente hasta que MP nos avise
-
-  return {
-    id: "64ac28bc-2365-4fd0-95ba-b4f053756cd9",
-    status: "pending",
-  };
+import { firestore } from "./firestore";
+const collection = firestore.collection("purchases");
+type Purchase = {
+  id: string;
+  from: string;
+  amount: number;
+  message: string;
+  date: Date;
+  status: string;
+};
+export async function getConfirmedPayments(): Promise<Purchase[]> {
+  // Mock data
+  const snapshot = await collection.where("status", "==", "confirmed").get();
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Purchase[];
 }
 
-export function confirmPurchase(purchaseId: string) {
-  // acá tendríamos que ir a la DB a cambiar el estatus del pago a "confirmed" (o algo así)
-  // esto se ocupa solo del purchase, no del mail ni nada de eso
-  // Todo lo que tiene que ver con asignar el producto mandar el mail, etc
-  // lo tiene que atender el endpoint o un controller en su defecto
+export async function createPurchase(
+  newPurchInput: Pick<Purchase, "from" | "amount" | "message">
+): Promise<string> {
+  const purchase = {
+    ...newPurchInput,
+    date: new Date(),
+    status: "pending",
+  };
+
+  const newPurchaseRef = await collection.add(purchase);
+  // guardamos esta nueva purchase en la db y devolvemos el id
+  console.log(`New purchase created with ID: ${newPurchaseRef.id}`);
+  return newPurchaseRef.id;
+}
+
+export async function confirmPurchase(purchaseId: string) {
+  // confirmamos la compra en la DB
+  await collection.doc(purchaseId).update({ status: "confirmed" });
   console.log(`Purchase ${purchaseId} confirmed`);
   return true;
 }

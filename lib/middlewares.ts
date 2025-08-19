@@ -4,7 +4,6 @@ import { decode } from "lib/jwt";
 
 export function authMiddleware(callback) {
   return function (req: NextApiRequest, res: NextApiResponse) {
-    console.log("soy el middleware de auth");
     const token = parseToken(req);
     if (!token) {
       res.status(401).send({ message: "no hay token" });

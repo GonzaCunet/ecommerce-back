@@ -20,7 +20,6 @@ type CreatePrefOptions = {
   productDescription: string;
   productId: string;
   productPrice: number;
-  userEmail: string;
   transactionId: string;
 };
 
@@ -47,9 +46,9 @@ export async function createSingleProductPreference(
           unit_price: options.productPrice,
         },
       ],
-      payer: {
-        email: options.userEmail,
-      },
+      // payer: {
+      //   email: options.userEmail,
+      // },
       // URL de redirección en los distintos casos
       back_urls: {
         success: "https://apx.school/",
