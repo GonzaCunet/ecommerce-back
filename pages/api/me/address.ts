@@ -8,7 +8,7 @@ const handler = methods({
     const userId = token.userId;
     const user = new User(userId);
     await user.pull();
-    user.data = { ...user.data, adress: req.body.adress };
+    user.data = { ...user.data, address: req.body.address };
     await user.push();
     res.status(200).send({ user: user.data });
   },
